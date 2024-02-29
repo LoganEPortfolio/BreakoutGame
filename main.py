@@ -1,5 +1,6 @@
 from turtle import Screen
 import time
+from score import Score
 from player import Player
 from blocks import Bars
 from ball import Ball
@@ -16,6 +17,8 @@ class Game:
 
         self.player = Player()
         self.ball = Ball()
+        self.score = Score()
+        self.ball.update_lives()
         self.blocks = []
         self.create_blocks()
 
@@ -25,7 +28,7 @@ class Game:
 
     def create_blocks(self):
         colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple']
-        for y in range(270, 60, -20):
+        for y in range(180, 60, -20):
             for x in range(-280, 280, 40):
                 block = Bars(x, y, random.choice(colors))
                 self.blocks.append(block)
@@ -43,10 +46,19 @@ class Game:
                 if self.ball.distance(block) < 20:
                     self.ball.x_move *= -1
                     block.hideturtle()
+                    self.score.add_points()
                     self.blocks.remove(block)
                     if not self.blocks:
                         print("Game Over")
                         break
+                    
+            if self.ball.ycor() < -180 and self.ball.lives > 0:
+                self.ball.reset_ball()
+            
+            if self.ball.lives == 0:
+                print('Game Over')
+                break
+                    
 
 
 if __name__ == "__main__":

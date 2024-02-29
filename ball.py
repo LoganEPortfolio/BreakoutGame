@@ -10,9 +10,9 @@ class Ball(Turtle):
         self.x_move = random.choice([-2,2])
         self.y_move = 2
         self.move_speed = 0.2
+        self.lives = 3
         
     def move_ball(self):
-        
         new_x = self.xcor() + self.x_move
         new_y = self.ycor() + self.y_move
         self.goto(new_x, new_y)
@@ -31,6 +31,13 @@ class Ball(Turtle):
             ball_x > player_x - 50 and ball_x < player_x + 50:
                 self.y_move *= -1
 
-        
-    def reset_position(self):
-        self.goto(0,0)
+    def reset_ball(self):
+        self.lives -= 1
+        self.update_lives()
+        print(self.lives)
+        self.goto(0, 20)
+
+    def update_lives(self):
+        self.clear()
+        self.goto(150, 200)
+        self.write(self.lives, align='center', font=('Courier', 40, 'normal'))
